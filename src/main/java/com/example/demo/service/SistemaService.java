@@ -2,8 +2,8 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.dto.SistemaRequest;
-import com.example.demo.dto.SistemaResponse;
+import com.example.demo.dto.response.SistemaResponse;
+import com.example.demo.dto.request.SistemaRequest;
 
 /**
  * La interfaz define QUÉ hace el service, no CÓMO. El controller depende

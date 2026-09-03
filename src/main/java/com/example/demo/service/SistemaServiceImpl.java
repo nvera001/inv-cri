@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.SistemaRequest;
-import com.example.demo.dto.SistemaResponse;
+import com.example.demo.dto.response.SistemaResponse;
+import com.example.demo.dto.request.SistemaRequest;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Sistema;
 import com.example.demo.repository.SistemaRepository;

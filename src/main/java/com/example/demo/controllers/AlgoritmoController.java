@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.AlgoritmoRequest;
-import com.example.demo.dto.AlgoritmoResponse;
+import com.example.demo.dto.response.AlgoritmoResponse;
+import com.example.demo.dto.request.AlgoritmoRequest;
 import com.example.demo.service.AlgoritmoService;
 
 import jakarta.validation.Valid;

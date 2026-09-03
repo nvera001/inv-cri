@@ -2,8 +2,8 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.dto.AlgoritmoRequest;
-import com.example.demo.dto.AlgoritmoResponse;
+import com.example.demo.dto.response.AlgoritmoResponse;
+import com.example.demo.dto.request.AlgoritmoRequest;
 
 public interface  AlgoritmoService {
     List<AlgoritmoResponse> listar();

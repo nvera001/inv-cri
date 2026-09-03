@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.AlgoritmoRequest;
-import com.example.demo.dto.AlgoritmoResponse;
-import com.example.demo.dto.AlgoritmoResumen;
+import com.example.demo.dto.response.AlgoritmoResponse;
+import com.example.demo.dto.response.AlgoritmoResumen;
+import com.example.demo.dto.request.AlgoritmoRequest;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Algoritmo;
 import com.example.demo.repository.AlgoritmoRepository;

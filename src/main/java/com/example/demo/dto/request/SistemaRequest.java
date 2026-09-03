@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.request;
 
 import com.example.demo.model.enums.Ambiente;
 import com.example.demo.model.enums.Criticidad;

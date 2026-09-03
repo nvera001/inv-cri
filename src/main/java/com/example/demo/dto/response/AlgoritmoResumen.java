@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.response;
 
 /**
  * Versión "chica" de un Algoritmo, solo id + nombre. La usamos para el
