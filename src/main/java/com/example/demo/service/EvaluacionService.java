@@ -11,4 +11,5 @@ public interface EvaluacionService {
     EvaluacionResponse crear(EvaluacionRequest request);
     EvaluacionResponse actualizar(Long id, EvaluacionRequest request);
     void eliminar(Long id);
+    EvaluacionResponse calcular(Long componenteId);
 }

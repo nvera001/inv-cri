@@ -38,6 +38,12 @@ public class EvaluacionController {
         return ResponseEntity.created(URI.create("/api/evaluaciones/" + creada.id())).body(creada);
     }
 
+    @PostMapping("/calcular/{componenteId}")
+    public ResponseEntity<EvaluacionResponse> calcular(@PathVariable Long componenteId) {
+        EvaluacionResponse creada = evaluacionService.calcular(componenteId);
+        return ResponseEntity.created(URI.create("/api/evaluaciones/" + creada.id())).body(creada);
+    }
+
     @PutMapping("/{id}")
     public EvaluacionResponse actualizar(@PathVariable Long id, @Valid @RequestBody EvaluacionRequest request) {
         return evaluacionService.actualizar(id, request);

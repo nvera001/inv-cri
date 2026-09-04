@@ -5,24 +5,32 @@ import com.example.demo.dto.response.EvaluacionResponse;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Componente;
 import com.example.demo.model.Evaluacion;
+import com.example.demo.model.ParametroRiesgo;
 import com.example.demo.model.enums.Prioridad;
 import com.example.demo.repository.ComponenteRepository;
 import com.example.demo.repository.EvaluacionRepository;
+import com.example.demo.repository.ParametroRiesgoRepository;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class EvaluacionServiceImpl implements EvaluacionService {
 
+    private static final Long ID_PARAMETRO_UNICO = 1L;
+
     private final EvaluacionRepository evaluacionRepository;
     private final ComponenteRepository componenteRepository;
+    private final ParametroRiesgoRepository parametroRiesgoRepository;
 
     public EvaluacionServiceImpl(EvaluacionRepository evaluacionRepository,
-                                  ComponenteRepository componenteRepository) {
+                                  ComponenteRepository componenteRepository,
+                                  ParametroRiesgoRepository parametroRiesgoRepository) {
         this.evaluacionRepository = evaluacionRepository;
         this.componenteRepository = componenteRepository;
+        this.parametroRiesgoRepository = parametroRiesgoRepository;
     }
 
     @Override
@@ -56,6 +64,36 @@ public class EvaluacionServiceImpl implements EvaluacionService {
     public void eliminar(Long id) {
         Evaluacion evaluacion = buscarEntidad(id);
         evaluacionRepository.delete(evaluacion);
+    }
+
+    // NUEVO: calcula automáticamente margenAnios y prioridad con la
+    // fórmula de Mosca, en vez de recibirlos a mano en el body.
+    @Override
+    public EvaluacionResponse calcular(Long componenteId) {
+        Componente componente = componenteRepository.findById(componenteId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Componente no encontrado con id " + componenteId));
+
+        ParametroRiesgo parametro = parametroRiesgoRepository.findById(ID_PARAMETRO_UNICO)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Todavía no hay parámetros de riesgo configurados. Configurá GET/PUT /api/parametros-riesgo primero."));
+
+        boolean quantumSafe = componente.getAlgoritmo().isQuantumSafe();
+
+        CalculadoraRiesgo.ResultadoRiesgo resultado = CalculadoraRiesgo.calcular(
+                componente.getVidaUtilDato(),
+                parametro.getAniosMigracion(),
+                parametro.getAnioEstimadoCRQC(),
+                quantumSafe
+        );
+
+        Evaluacion evaluacion = new Evaluacion();
+        evaluacion.setComponente(componente);
+        evaluacion.setFecha(LocalDate.now());
+        evaluacion.setMargenAnios(resultado.margenAnios());
+        evaluacion.setPrioridad(resultado.prioridad());
+
+        return toResponse(evaluacionRepository.save(evaluacion));
     }
 
     private Evaluacion buscarEntidad(Long id) {
