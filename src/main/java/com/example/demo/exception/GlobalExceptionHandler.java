@@ -79,4 +79,34 @@ public class GlobalExceptionHandler  {
         );
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
+    // Se dispara cuando LoginAttemptService detecta demasiados intentos
+    // fallidos de login seguidos para el mismo usuario (fuerza bruta).
+    @ExceptionHandler(DemasiadosIntentosException.class)
+    public ResponseEntity<ApiError> handleDemasiadosIntentos(DemasiadosIntentosException ex) {
+        ApiError error = new ApiError(
+                LocalDateTime.now(),
+                HttpStatus.TOO_MANY_REQUESTS.value(),
+                HttpStatus.TOO_MANY_REQUESTS.getReasonPhrase(),
+                ex.getMessage(),
+                null
+        );
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(error);
+    }
+
+    // Red de seguridad final: cualquier excepción no contemplada arriba
+    // (una NullPointerException, un error de la base de datos, etc.) NO
+    // debe devolver el HTML/stacktrace crudo default de Spring. La
+    // atajamos acá y devolvemos el mismo ApiError de siempre con 500,
+    // sin exponer detalles internos del server en el mensaje.
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiError> handleGenerico(Exception ex) {
+        ApiError error = new ApiError(
+                LocalDateTime.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+                "Ocurrió un error inesperado en el servidor",
+                null
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
 }
