@@ -62,4 +62,21 @@ public class GlobalExceptionHandler  {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+
+    // Se dispara cuando el login falla (usuario inexistente O contraseña
+    // incorrecta). A propósito usamos el MISMO mensaje genérico para los
+    // dos casos: si le dijéramos al cliente "el usuario no existe" vs
+    // "la contraseña está mal", alguien podría usar esa diferencia para
+    // averiguar qué usernames existen en el sistema probando uno por uno.
+    @ExceptionHandler(CredencialesInvalidasException.class)
+    public ResponseEntity<ApiError> handleCredencialesInvalidas(CredencialesInvalidasException ex) {
+        ApiError error = new ApiError(
+                LocalDateTime.now(),
+                HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                ex.getMessage(),
+                null
+        );
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
 }
