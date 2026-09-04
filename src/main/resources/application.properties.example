@@ -1,6 +1,8 @@
-spring.datasource.url=jdbc:mysql://localhost:3306/inventario_cripto
+spring.datasource.url=jdbc:mysql://localhost:3306/inv_crip
 spring.datasource.username=root
 spring.datasource.password=TU_PASSWORD_ACA
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 server.port=8090
+
+spring.jpa.open-in-view=false
